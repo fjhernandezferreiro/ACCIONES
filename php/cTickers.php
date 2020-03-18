@@ -79,7 +79,7 @@ class cTickers
      * @return array registros de la tabla ticker
      * @throws Exception
      */
-    private function obtenerTickers($idTicker = NULL)
+    private static function obtenerTickers($idTicker = NULL)
     {
         try {
             if (!$idTicker) {
