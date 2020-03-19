@@ -22,9 +22,9 @@ class cTickers
     const ESTADO_ERROR_PARAMETROS = 4;
     const ESTADO_NO_ENCONTRADO = 5;
 
-    public static function get()
+    public static function get($idTicker = NULL)
     {
-        return self::obtenerTickers();
+        return self::obtenerTickers($idTicker);
     }
 
     public static function post()
@@ -74,7 +74,7 @@ class cTickers
     }
 
     /**
-     * Obtiene la colección de tickers o un solo ticker indicado por el identificador
+     * Obtiene la colecciï¿½n de tickers o un solo ticker indicado por el identificador
      * @param null $idTicker identificador del ticker (Opcional)
      * @return array registros de la tabla ticker
      * @throws Exception
@@ -115,7 +115,7 @@ class cTickers
     }
 
     /**
-     * Añade un nuevo contacto asociado a un usuario
+     * Aï¿½ade un nuevo contacto asociado a un usuario
      * @param int $idUsuario identificador del usuario
      * @param mixed $ticker datos del ticker
      * @return string identificador del ticker
@@ -161,7 +161,7 @@ class cTickers
 				
                 $sentencia->execute();
 
-                // Retornar en el último id insertado
+                // Retornar en el ï¿½ltimo id insertado
                 return $pdo->lastInsertId();
 
             } catch (PDOException $e) {
@@ -170,7 +170,7 @@ class cTickers
         } else {
             throw new ExcepcionApi(
                 self::ESTADO_ERROR_PARAMETROS,
-                utf8_encode("Error en existencia o sintaxis de parámetros"));
+                utf8_encode("Error en existencia o sintaxis de parï¿½metros"));
         }
 
     }
@@ -224,7 +224,7 @@ class cTickers
      * Elimina un contacto asociado a un usuario
      * @param int $idUsuario identificador del usuario
      * @param int $idContacto identificador del contacto
-     * @return bool true si la eliminación se pudo realizar, en caso contrario false
+     * @return bool true si la eliminaciï¿½n se pudo realizar, en caso contrario false
      * @throws Exception excepcion por errores en la base de datos
      
     private function eliminar($idUsuario, $idContacto)

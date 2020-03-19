@@ -20,9 +20,10 @@ echo "</pre>";
 
 
 //Ficheros requeridos
-require 'cTickers.php';
-require 'VistaJson.php';
-require 'ConexionBD.php';
+require 'cTickers.php';     // Clase Tickers, de la tabla ttickers
+require 'cMovimientos.php';     // Clase Movimientos, de la tabla tMovimientos
+require 'VistaJson.php';    // Transforma los datos recuperados en JSON
+require 'ConexionBD.php';   // Datos de conexión con la BBDD
 
 // Constantes de estado
 const ESTADO_URL_INCORRECTA = 2;
@@ -41,9 +42,30 @@ switch ($formato) {
         $vista = new VistaJson();
 }
 
-$recurso = "cTickers";
-$metodo = "get";
-$peticion = 0;
+//echo "<br><hr>REQUEST_METHOD    --> " . $_SERVER['REQUEST_METHOD'] . "<br>";        // GET
+//echo "<br><hr>PATH_INFO         --> " . $_SERVER['PATH_INFO'] . "<br>";             // /cTickers
+
+$arrURL = explode('/',$_SERVER['PATH_INFO']);           // "cTickers"
+
+//echo "<br><hr>arrURL.count         --> " . count($arrURL) . "<br>";    // longitud
+//echo "<br><hr>arrURL[0]         --> " . $arrURL[0] . "<br>";    // [blank]
+//echo "<br><hr>arrURL[1]         --> " . $arrURL[1] . "<br>";    // cTickers
+//echo "<br><hr>arrURL[2]         --> " . $arrURL[2] . "<br>";    // Siguiente parámetro
+//echo "<br><hr>arrURL[3]         --> " . $arrURL[3] . "<br>";    // Y otro
+
+if (count($arrURL)>1) {
+    $recurso = $arrURL[1];
+}
+
+if (count($arrURL)>2) {
+    $peticion = $arrURL[2];          // Esto se usará si queremos pasar el ID de algún elemento en particular
+} else {
+    $peticion = null;
+}
+
+$metodo = $_SERVER['REQUEST_METHOD'];       // "get"
+
+
 
 //La función method exists recibe por parámetro una clase y un nombre de método para verificar si está definido
 if (method_exists($recurso, $metodo)) {

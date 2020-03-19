@@ -1,5 +1,28 @@
+.divMenu {
+    margin: 1em;    
+}
+.spanMenu {
+    margin: 1em;
+    padding: 0.5em;
+    color: blue;
+    background-color: yellow;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.spanMenu:hover {
+    color: yellow;
+    background-color: blue;
+    
+}
+
 .spanTickers {
     font: 1em verdana;
     color: brown;
     margin-right: 2em;
+}
+
+table, th , td {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: right;
 }
