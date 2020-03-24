@@ -1,0 +1,101 @@
+***************************
+**    COMPRA-ACCIONES    **
+***************************
+
+Movimiento básico sin complejidad. Los datos a registrar son:
+"cantidad" 				--> (Número de acciones compradas)
+"valor unitario" 		--> (Precio por acción)
+"comisión"				--> (Comisión por compra)
+"fecha" 				--> (Fecha de la compra)
+"lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitaremos en AMPLIACIONES y VENTAS).
+
+
+***************************
+**    ABONO DIVIDENDO    **
+***************************
+
+Movimiento básico sin complejidad. Los datos a registrar son:
+"cantidad"				--> (Número de acciones que aplican al cobro del dividendo)
+"valorUnitario"			--> (Dividendo por acción) €/$
+"comision"				--> (Por el momento, ING no cobra comisión por cobro de dividendo)
+"fechaMovimiento"		--> (Fecha del cobro del dividendo)
+"retencionOrigen"		--> (Si es una acción extranjera, retención que practica la hacienda de aquel país)
+"retencionDestino"		--> (Retención de la hacienda española)
+"ajuste"				--> (En algún caso hay descuadre por los decimales que son 4 o 2, aquí se ajusta con signo)
+"tipoCambio"			--> (Si la acción es extranjera se indica el tipo de cambio de la moneda extranjera al €)
+
+
+***************************
+**  AMPLIACIÓN LIBERADA  **
+***************************
+
+Solo se introduce a nivel informativo. No tiene efectos a nivel de €/$. Los datos a registrar son:
+"cantidad"				--> (Número de derechos que se asignaron por acción)
+"valorUnitario"			--> (Valor que se le dio al derecho) €/$
+"fechaMovimiento"		--> (Fecha de la ampliación de capital)
+
+
+***************************
+**   ACCIONESxDERECHOS   **
+***************************
+
+Este movimiento se traduce en adquirir acciones para LOTES PREVIOS. Los datos a registrar son:
+"cantidad"				--> (Número de acciones nuevas para el LOTE)
+"valorUnitario"			--> (El valor no tiene sentido, no tiene coste) €/$
+"fechaMovimiento"		--> (La fecha se deja a nulo. La fecha FIFO es la de la adquisición del LOTE original que otorga las nuevas acciones: Ampliación -[genera]-> derechos -[se transforman en]-> acciones)
+						--> Después, en BBDD se hará una actualización masiva poniendo aquí el valor de "fechaMovimiento" de la compra del primer lote (ojo, el primer lote puede ser accionesXderechos?)
+						** ¡Ojo, MAPFRE hizo una AMPLIACIÓN NO LIBERADA el 27/6/2011 (filas 41-43)
+"ajuste"				--> Aquí meto el valor de DERECHOS-SOBRANTES correspondiente a este lote. Este importe es lo que serían los derechos que no se han convertido en acciones enteras y se resta el coste del lote que genera estos derechos.
+
+BBDD UPDATE --> 
+UPDATE `tmovimientos` TM set fechaMovimiento = (SELECT fechaMovimiento FROM `tmovimientos` WHERE fechaMovimiento is not null and lote is not null and lote = TM.lote group by lote having min(fechaMovimiento))
+WHERE tipoMovimiento = 'ACCIONESxDERECHOS' and fechaMovimiento is null
+***************************
+**   DERECHOS-SOBRANTES  **
+***************************
+Este movimiento se ha metido en "ajustes" del movimiento de ACCIONESxDERECHOS (ver arriba).
+
+*******************************
+** COMPRA-DERECHOS-SOBRANTES **
+*******************************
+Este movimiento es *complementario* al de DERECHOS-SOBRANTES y lo que va a hacer es sumarse al coste y comisiones del lote nuevo que se adquiere en la AMPLIACIÓN LIBERADA en el movimiento *DERECHOSxACCIONES*
+--> Se suma en la columna de "ajuste" y en la siguiente para no desvirtuar la hoja.
+
+*******************************
+**  COMPRA-DERECHOS-MERCADO  **
+*******************************
+Este movimiento es *acumulativo* y se sumará al de COMPRA-DERECHOS-SOBRANTES y lo que va a hacer es sumarse al coste y comisiones del lote nuevo que se adquiere en la AMPLIACIÓN LIBERADA en el movimiento *DERECHOSxACCIONES*
+--> Se suma en la columna de "ajuste" y en la siguiente para no desvirtuar la hoja.
+
+*************************
+**  DERECHOSxACCIONES  **
+*************************
+Este movimiento es como una compra de acciones ya que adquirimos un nuevo LOTE. El coste está en la columna "ajuste" y las comisiones en la siguiente ya que son suma de COMPRA-DERECHOS-SOBRANTES + COMPRA-DERECHOS-MERCADO.
+--> Para calcular el valorUnitario hacemos una división del ajuste / cantidad. Los datos a registrar son:
+"cantidad"				--> (Número de acciones nuevas para el LOTE)
+"valorUnitario"			--> (Resultado de dividir ajuste / cantidad) €/$ // Ajuste es el coste acumulado de compra de derechos. En auxiliar está la comisión acumulada.
+"fechaMovimiento"		--> (Fecha de la ampliación de capital, interesa porque es como una compra)
+"lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitaremos en AMPLIACIONES y VENTAS).
+
+*************************
+**  DERECHOS-VENDIDOS  **
+*************************
+--> También incluyo aquí el caso especial de DERECHOS-SOBRANTES (VENDIDOS) de MAPFRE en AMPLIACIÓN NO LIBERADA el 27/6/2011.
+Este movimiento no es un ingreso en realidad porque se venden derechos (sin comisión) y bajan el precio de adquisición del lote al que corresponden.
+"cantidad"				--> (Número de derechos vendido sen el LOTE)
+"valorUnitario"			--> (Lo conseguido por derecho) €/$
+"lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitamos en AMPLIACIONES y VENTAS).
+"fechaMovimiento"		--> (Fecha del evento da un poco igual porque va asociado a un LOTE, pero mejor tenerlo, columna auxiliar).
+
+*************************
+**    PRIMA EMISIÓN    **
+*************************
+Movimiento similar al ABONO-DIVIDENDO sin complejidad. Los datos a registrar son:
+"cantidad"				--> (Número de acciones que aplican al cobro del dividendo)
+"valorUnitario"			--> (Dividendo por acción) €/$
+"comision"				--> (Por el momento, ING no cobra comisión por cobro)
+"fechaMovimiento"		--> (Fecha del cobro del dividendo)
+"retencionOrigen"		--> (Si es una acción extranjera, retención que practica la hacienda de aquel país)
+"retencionDestino"		--> (Retención de la hacienda española)
+"ajuste"				--> (En algún caso hay descuadre por los decimales que son 4 o 2, aquí se ajusta con signo)
+"tipoCambio"			--> (Si la acción es extranjera se indica el tipo de cambio de la moneda extranjera al €)

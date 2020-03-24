@@ -12,6 +12,7 @@ class cMovimientos
     const VALOR_UNITARIO = "valorUnitario";
     const COMISION = "comision";
     const FECHA_MOVIMIENTO = "fechaMovimiento";
+    const LOTE = "lote";
     const RETENCION_ORIGEN = "retencionOrigen";
     const RETENCION_DESTINO = "retencionDestino";
     const AJUSTE = "ajuste";
@@ -90,14 +91,16 @@ class cMovimientos
     {
         try {
             if (!$idMovimiento) {
-                $comando = "SELECT * FROM " . self::NOMBRE_TABLA;
+                $comando = "SELECT * FROM " . self::NOMBRE_TABLA . " ORDER BY fechaMovimiento";
 
                 // Preparar sentencia
                 $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
                 
             } else {
                 $comando = "SELECT * FROM " . self::NOMBRE_TABLA .
-                    " WHERE " . self::MOVIMIENTO_ID . "=?";
+                    " WHERE " . self::MOVIMIENTO_ID . "=?"  . " ORDER BY fechaMovimiento";
+
+                echo $comando;
 
                 // Preparar sentencia
                 $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
@@ -143,6 +146,7 @@ class cMovimientos
                     self::VALOR_UNITARIO . "," .
                     self::COMISION . "," .
                     self::FECHA_MOVIMIENTO . "," .
+                    self::LOTE . "," .
                     self::RETENCION_ORIGEN . "," .
                     self::RETENCION_DESTINO . "," .
                     self::AJUSTE . "," .
@@ -162,15 +166,16 @@ class cMovimientos
                 $sentencia->bindParam(4, $valorUnitario);
                 $sentencia->bindParam(5, $comision);
                 $sentencia->bindParam(6, $fechaMovimiento);
-                $sentencia->bindParam(7, $retencionOrigen);
-                $sentencia->bindParam(8, $retencionDestino);
-                $sentencia->bindParam(9, $ajuste);
-                $sentencia->bindParam(10, $tipoCambio);               
-                $sentencia->bindParam(11, $auditInitUser);
-				$sentencia->bindParam(12, $auditInitDate);
-				$sentencia->bindParam(13, $auditLastUser);
-				$sentencia->bindParam(14, $auditLastDate);
-                $sentencia->bindParam(15, $movimientoId);
+                $sentencia->bindParam(7, $lote);
+                $sentencia->bindParam(8, $retencionOrigen);
+                $sentencia->bindParam(9, $retencionDestino);
+                $sentencia->bindParam(10, $ajuste);
+                $sentencia->bindParam(11, $tipoCambio);               
+                $sentencia->bindParam(12, $auditInitUser);
+				$sentencia->bindParam(13, $auditInitDate);
+				$sentencia->bindParam(14, $auditLastUser);
+				$sentencia->bindParam(15, $auditLastDate);
+                $sentencia->bindParam(16, $movimientoId);
 
                 $ticker = $movimiento->ticker;
                 $tipoMovimiento = $movimiento->tipoMovimiento;
@@ -178,6 +183,7 @@ class cMovimientos
                 $valorUnitario = $movimiento->valorUnitario;
                 $comision = $movimiento->comision;
                 $fechaMovimiento = $movimiento->fechaMovimiento;
+                $lote = $movimiento->lote;
                 $retencionOrigen = $movimiento->retencionOrigen;
                 $retencionDestino = $movimiento->retencionDestino;
                 $ajuste = $movimiento->ajuste;
@@ -223,6 +229,7 @@ class cMovimientos
                             self::VALOR_UNITARIO . "=?," .
                             self::COMISION . "=?," .
                             self::FECHA_MOVIMIENTO . "=?," .
+                            self::LOTE . "=?," .
                             self::RETENCION_ORIGEN . "=?," .
                             self::RETENCION_DESTINO . "=?," .
                             self::AJUSTE . "=?," .
@@ -241,15 +248,16 @@ class cMovimientos
             $sentencia->bindParam(4, $valorUnitario);
             $sentencia->bindParam(5, $comision);
             $sentencia->bindParam(6, $fechaMovimiento);
-            $sentencia->bindParam(7, $retencionOrigen);
-            $sentencia->bindParam(8, $retencionDestino);
-            $sentencia->bindParam(9, $ajuste);
-            $sentencia->bindParam(10, $tipoCambio);               
-            $sentencia->bindParam(11, $auditInitUser);
-			$sentencia->bindParam(12, $auditInitDate);
-			$sentencia->bindParam(13, $auditLastUser);
-			$sentencia->bindParam(14, $auditLastDate);
-            $sentencia->bindParam(15, $movimientoId);          
+            $sentencia->bindParam(7, $lote);
+            $sentencia->bindParam(8, $retencionOrigen);
+            $sentencia->bindParam(9, $retencionDestino);
+            $sentencia->bindParam(10, $ajuste);
+            $sentencia->bindParam(11, $tipoCambio);               
+            $sentencia->bindParam(12, $auditInitUser);
+			$sentencia->bindParam(13, $auditInitDate);
+			$sentencia->bindParam(14, $auditLastUser);
+			$sentencia->bindParam(15, $auditLastDate);
+            $sentencia->bindParam(16, $movimientoId);          
 
             $ticker = $movimiento->ticker;
             $tipoMovimiento = $movimiento->tipoMovimiento;
@@ -257,6 +265,7 @@ class cMovimientos
             $valorUnitario = $movimiento->valorUnitario;
             $comision = $movimiento->comision;
             $fechaMovimiento = $movimiento->fechaMovimiento;
+            $lote = $movimiento->lote;
             $retencionOrigen = $movimiento->retencionOrigen;
             $retencionDestino = $movimiento->retencionDestino;
             $ajuste = $movimiento->ajuste;

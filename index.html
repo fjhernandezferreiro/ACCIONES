@@ -19,8 +19,36 @@
         <![endif]-->
         
         <div id="cabecera">Acciones (by Kodrooooooooo)</div>
-        <div>Otro div</div>
+        <div id="divDebug">Otro div</div>
         
+        <div id="filtros">
+            <!-- RADIO BUTTONS --> 
+            <table><tr><td>
+                <input type='radio' name='radiog_dark' id='COMPRAS' class='css-checkbox' checked='checked' />
+                <label for='COMPRAS' class='css-label radGroup2'>COMPRAS</label></td>
+            <td>
+                <input type='radio' name='radiog_dark' id='DIVIDENDOS' class='css-checkbox'/>
+                <label for='DIVIDENDOS' class='css-label radGroup2'>DIVIDENDOS</label></td>
+            <td>
+                <input type='radio' name='radiog_dark' id='OTROS' class='css-checkbox' />
+                <label for='OTROS' class='css-label radGroup2'>OTROS</label>
+            </td>
+            <td id="tdTickerSeleccionado">
+                TICKER: 
+            </td>
+            <td>
+                <span id="spanBorrarTickerSeleccionado">Borrar</div>
+            </td>
+            <td id="tdLoteSeleccionado">
+                LOTE: 
+            </td>
+            <td>
+                <span id="spanBorrarLoteSeleccionado">Borrar</div>
+            </td>
+            </tr></table>
+
+    
+        </div>
         <div id="menu" class="divMenu">
             <span id="spanMenuTickers" class="spanMenu">Tickers</span>
             <span id="spanMenuMovimientos" class="spanMenu">Movimientos</span>

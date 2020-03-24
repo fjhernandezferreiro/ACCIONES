@@ -23,6 +23,100 @@
 }
 
 table, th , td {
+    border: 1px solid black;
     font-family: 'Courier New', Courier, monospace;
     text-align: right;
+}
+
+td.compra {
+    background-color: lightsalmon;
+    font-weight: bold;
+}
+
+td.dividendo {
+    background-color: lightgreen;
+    font-weight: bold;
+}
+
+td.ampliacion  {
+    background-color: lightgray;
+    font-style: italic;
+}
+
+td.venta  {
+    background-color: lightcoral;
+    font-style: italic;
+}
+
+table th {
+    color: white;
+    text-align: center; 
+    padding-right: 2em;
+    padding-left: 2em;
+    margin-left: 0em;
+    font-weight: bolder;
+    background-color: black;
+}
+
+.tdTickers {
+    color: blueviolet;
+    text-align: center; 
+    padding-right: 2em;
+    padding-left: 2em;
+    margin-left: 0em;
+    font-weight: bolder;
+    background-color: pink;
+}
+
+.tdTickers:hover {
+    color: pink;
+    background-color: blueviolet;
+}
+
+.tdLote {
+    color: darkblue;
+    text-align: center; 
+    padding-right: 2em;
+    padding-left: 2em;
+    margin-left: 0em;
+    font-weight: bolder;
+    background-color: lightgoldenrodyellow;
+}
+
+.tdLote:hover {
+    color: lightgoldenrodyellow;
+    background-color: darkblue;
+}
+
+/*************************************************/
+/*************************************************/
+/*************************************************/
+input[type=radio].css-checkbox {
+    position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+}
+
+input[type=radio].css-checkbox + label.css-label {
+    padding-left:17px;
+    height:12px; 
+    display:inline-block;
+    line-height:12px;
+    background-repeat:no-repeat;
+    background-position: 0 0;
+    font-size:12px;
+    vertical-align:middle;
+    cursor:pointer;
+
+}
+
+input[type=radio].css-checkbox:checked + label.css-label {
+    background-position: 0 -12px;
+}
+label.css-label {
+background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_b2307a28b4566f32019ec2f1dc75922e.png);
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 }
