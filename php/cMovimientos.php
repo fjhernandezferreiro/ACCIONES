@@ -91,14 +91,14 @@ class cMovimientos
     {
         try {
             if (!$idMovimiento) {
-                $comando = "SELECT * FROM " . self::NOMBRE_TABLA . " ORDER BY fechaMovimiento";
+                $comando = "SELECT * FROM " . self::NOMBRE_TABLA . " ORDER BY fechaMovimiento, MovimientoId";
 
                 // Preparar sentencia
                 $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
                 
             } else {
                 $comando = "SELECT * FROM " . self::NOMBRE_TABLA .
-                    " WHERE " . self::MOVIMIENTO_ID . "=?"  . " ORDER BY fechaMovimiento";
+                    " WHERE " . self::MOVIMIENTO_ID . "=?"  . " ORDER BY fechaMovimiento, MovimientoId";
 
                 echo $comando;
 

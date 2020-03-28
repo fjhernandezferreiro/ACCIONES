@@ -48,6 +48,17 @@ td.venta  {
     font-style: italic;
 }
 
+td.derechos {
+    background-color:lightpink;
+    font-style: italic;
+
+}
+td.tdTotal {
+    background-color: darkblue;
+    font-weight: bolder;
+    color: lightyellow;
+}
+
 table th {
     color: white;
     text-align: center; 
@@ -58,7 +69,7 @@ table th {
     background-color: black;
 }
 
-.tdTickers {
+.tdTickers, .tdFiltro {
     color: blueviolet;
     text-align: center; 
     padding-right: 2em;
@@ -66,6 +77,7 @@ table th {
     margin-left: 0em;
     font-weight: bolder;
     background-color: pink;
+    cursor: pointer;
 }
 
 .tdTickers:hover {
@@ -73,19 +85,32 @@ table th {
     background-color: blueviolet;
 }
 
-.tdLote {
+.tdLote, .tdSpanFiltroBorrar {
     color: darkblue;
     text-align: center; 
     padding-right: 2em;
     padding-left: 2em;
-    margin-left: 0em;
+    margin-left: 2em;
+    margin-right: 2em;
     font-weight: bolder;
     background-color: lightgoldenrodyellow;
+    cursor: pointer;
 }
 
-.tdLote:hover {
+.tdLote:hover, .tdSpanFiltroBorrar:hover, .tdTickerSeleccionado, .tdLoteSeleccionado {
     color: lightgoldenrodyellow;
     background-color: darkblue;
+}
+
+.tdFiltro {
+    color: black;
+    text-align: center; 
+    padding-right: 1em;
+    padding-left: 2em;
+    margin-left: 0em;
+    font-weight: bolder;
+    background-color: lightblue;
+    height: 2em;
 }
 
 /*************************************************/
@@ -96,15 +121,18 @@ input[type=radio].css-checkbox {
 }
 
 input[type=radio].css-checkbox + label.css-label {
-    padding-left:17px;
+    padding-left:27px;
+    padding-right:17px;
     height:12px; 
     display:inline-block;
     line-height:12px;
     background-repeat:no-repeat;
     background-position: 0 0;
-    font-size:12px;
+    font-size:18px;
+    font-weight: bolder;
     vertical-align:middle;
     cursor:pointer;
+    margin: 0.5em;
 
 }
 

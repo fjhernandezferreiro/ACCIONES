@@ -8,7 +8,7 @@ Movimiento básico sin complejidad. Los datos a registrar son:
 "comisión"				--> (Comisión por compra)
 "fecha" 				--> (Fecha de la compra)
 "lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitaremos en AMPLIACIONES y VENTAS).
-
+TO-DO : Rellenar columnas de la S a la Y. Ojo con el tipo de cambio en compras extranjeras, hay que ponerlo (copiarlo de la columna F)
 
 ***************************
 **    ABONO DIVIDENDO    **
@@ -23,7 +23,7 @@ Movimiento básico sin complejidad. Los datos a registrar son:
 "retencionDestino"		--> (Retención de la hacienda española)
 "ajuste"				--> (En algún caso hay descuadre por los decimales que son 4 o 2, aquí se ajusta con signo)
 "tipoCambio"			--> (Si la acción es extranjera se indica el tipo de cambio de la moneda extranjera al €)
-
+TO-DO : Rellenar columnas de la S a la Y y poner comisión a cero (columna I)
 
 ***************************
 **  AMPLIACIÓN LIBERADA  **
@@ -33,7 +33,9 @@ Solo se introduce a nivel informativo. No tiene efectos a nivel de €/$. Los da
 "cantidad"				--> (Número de derechos que se asignaron por acción)
 "valorUnitario"			--> (Valor que se le dio al derecho) €/$
 "fechaMovimiento"		--> (Fecha de la ampliación de capital)
-
+TO-DO : En ampliación liberada normal y corriente que cojo acciones --> Poner fecha aprox. a la primera fila y las demás borrarlas (XXXXXXXXXXXXX).
+TO-DO : A la altura de COMPRA-DERECHOS-SOBRANTES, columnas X e Y se suman coste y comisión.
+TO-DO : A la altura de ACCIONESxDERECHOS se mete el importe negativo de DERECHOS-SOBRANTES como ajuste (rellenar desde la columna S hasta la columna X).
 
 ***************************
 **   ACCIONESxDERECHOS   **
@@ -46,6 +48,7 @@ Este movimiento se traduce en adquirir acciones para LOTES PREVIOS. Los datos a 
 						--> Después, en BBDD se hará una actualización masiva poniendo aquí el valor de "fechaMovimiento" de la compra del primer lote (ojo, el primer lote puede ser accionesXderechos?)
 						** ¡Ojo, MAPFRE hizo una AMPLIACIÓN NO LIBERADA el 27/6/2011 (filas 41-43)
 "ajuste"				--> Aquí meto el valor de DERECHOS-SOBRANTES correspondiente a este lote. Este importe es lo que serían los derechos que no se han convertido en acciones enteras y se resta el coste del lote que genera estos derechos.
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA.
 
 BBDD UPDATE --> 
 UPDATE `tmovimientos` TM set fechaMovimiento = (SELECT fechaMovimiento FROM `tmovimientos` WHERE fechaMovimiento is not null and lote is not null and lote = TM.lote group by lote having min(fechaMovimiento))
@@ -54,18 +57,21 @@ WHERE tipoMovimiento = 'ACCIONESxDERECHOS' and fechaMovimiento is null
 **   DERECHOS-SOBRANTES  **
 ***************************
 Este movimiento se ha metido en "ajustes" del movimiento de ACCIONESxDERECHOS (ver arriba).
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA --> BORRAR sql.
 
 *******************************
 ** COMPRA-DERECHOS-SOBRANTES **
 *******************************
 Este movimiento es *complementario* al de DERECHOS-SOBRANTES y lo que va a hacer es sumarse al coste y comisiones del lote nuevo que se adquiere en la AMPLIACIÓN LIBERADA en el movimiento *DERECHOSxACCIONES*
 --> Se suma en la columna de "ajuste" y en la siguiente para no desvirtuar la hoja.
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA --> BORRAR sql.
 
 *******************************
 **  COMPRA-DERECHOS-MERCADO  **
 *******************************
 Este movimiento es *acumulativo* y se sumará al de COMPRA-DERECHOS-SOBRANTES y lo que va a hacer es sumarse al coste y comisiones del lote nuevo que se adquiere en la AMPLIACIÓN LIBERADA en el movimiento *DERECHOSxACCIONES*
 --> Se suma en la columna de "ajuste" y en la siguiente para no desvirtuar la hoja.
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA --> BORRAR sql.
 
 *************************
 **  DERECHOSxACCIONES  **
@@ -76,6 +82,7 @@ Este movimiento es como una compra de acciones ya que adquirimos un nuevo LOTE. 
 "valorUnitario"			--> (Resultado de dividir ajuste / cantidad) €/$ // Ajuste es el coste acumulado de compra de derechos. En auxiliar está la comisión acumulada.
 "fechaMovimiento"		--> (Fecha de la ampliación de capital, interesa porque es como una compra)
 "lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitaremos en AMPLIACIONES y VENTAS).
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA --> COPIAR sql.
 
 *************************
 **  DERECHOS-VENDIDOS  **
@@ -86,6 +93,8 @@ Este movimiento no es un ingreso en realidad porque se venden derechos (sin comi
 "valorUnitario"			--> (Lo conseguido por derecho) €/$
 "lote"					--> (Nombre que le damos al lote para criterio FIFO que necesitamos en AMPLIACIONES y VENTAS).
 "fechaMovimiento"		--> (Fecha del evento da un poco igual porque va asociado a un LOTE, pero mejor tenerlo, columna auxiliar).
+TO-DO : Ya hecho en AMPLIACIÓN LIBERADA.
+TO-DO : Ojo a cuando *vendo* DERECHOS-SOBRANTES --> Rellenar de S a Y incluyendo la fecha.
 
 *************************
 **    PRIMA EMISIÓN    **
@@ -99,3 +108,9 @@ Movimiento similar al ABONO-DIVIDENDO sin complejidad. Los datos a registrar son
 "retencionDestino"		--> (Retención de la hacienda española)
 "ajuste"				--> (En algún caso hay descuadre por los decimales que son 4 o 2, aquí se ajusta con signo)
 "tipoCambio"			--> (Si la acción es extranjera se indica el tipo de cambio de la moneda extranjera al €)
+
+*************************
+**      SPIN-OFF       **
+*************************
+--> Lo meteré a mano como una compra de acciones de WABTEC.
+--> Borrar SQL
