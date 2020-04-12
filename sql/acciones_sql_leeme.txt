@@ -53,6 +53,7 @@ TO-DO : Ya hecho en AMPLIACIÓN LIBERADA.
 BBDD UPDATE --> 
 UPDATE `tmovimientos` TM set fechaMovimiento = (SELECT fechaMovimiento FROM `tmovimientos` WHERE fechaMovimiento is not null and lote is not null and lote = TM.lote group by lote having min(fechaMovimiento))
 WHERE tipoMovimiento = 'ACCIONESxDERECHOS' and fechaMovimiento is null
+
 ***************************
 **   DERECHOS-SOBRANTES  **
 ***************************
@@ -114,3 +115,9 @@ Movimiento similar al ABONO-DIVIDENDO sin complejidad. Los datos a registrar son
 *************************
 --> Lo meteré a mano como una compra de acciones de WABTEC.
 --> Borrar SQL
+
+
+
+BBDD UPDATE --> 
+UPDATE `tmovimientos` TM set fechaMovimiento = (SELECT fechaMovimiento FROM `tmovimientos` WHERE fechaMovimiento is not null and lote is not null and lote = TM.lote group by lote having min(fechaMovimiento))
+WHERE tipoMovimiento = 'ACCIONESxDERECHOS' and fechaMovimiento is null
